@@ -36,10 +36,10 @@ export default function FormularioScreen() {
             pago = 1500;
         }
 
-        if (profesion.toLowerCase() == "programador") {
+        if (profesion.toLowerCase() == "Programador") {
             pagoT = pago + 300;
-        } else if (profesion.toLowerCase() == "medico") {
-            pagoT = pago * 1.15;
+        } else if (profesion.toLowerCase() == "Médico") {
+            pagoT = pago * 0.15;
         } else {
             pagoT = pago;
         }
