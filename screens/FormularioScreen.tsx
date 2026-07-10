@@ -28,6 +28,14 @@ export default function FormularioScreen() {
         let pago = 0;
         let pagoT = 0;
 
+//utilize esto porque tenia problemas al ingresar la profesion y que se pudiera calcular correctamente con lo bonos
+//esto permite que la profesion se pueda ingresar con mayusculas, minusculas y acentos y aun asi se pueda calcular correctamente
+        const profesionAjustar = profesion
+            .trim()
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
         if (edad < 25) {
             pago = 500;
         } else if (edad >= 25 && edad <= 50) {
@@ -36,10 +44,10 @@ export default function FormularioScreen() {
             pago = 1500;
         }
 
-        if (profesion.toLowerCase() == "Programador") {
+        if (profesionAjustar == "programador") {
             pagoT = pago + 300;
-        } else if (profesion.toLowerCase() == "Médico") {
-            pagoT = pago * 0.15;
+        } else if (profesionAjustar == "medico") {
+            pagoT = pago * 1.15;
         } else {
             pagoT = pago;
         }
