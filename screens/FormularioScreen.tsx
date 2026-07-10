@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useActionState, useState } from 'react'
 /*
 CREAR UNA APP QUE RECIBA NOMBRE, EDAD Y PROFESION
 CALCULAR EL SALARIO FINAL SI:
@@ -20,17 +20,41 @@ export default function FormularioScreen() {
     const [edad, setedad] = useState(0)
     const [profesion, setprofesion] = useState("")
 
-    function calcular(){
+    const [pagoTotal, setpagoTotal] = useState(0)
 
-        console.log("OPERACIONES..........")
+    const [calculado, setCalculado] = useState(false);
 
-        limpiar()
+    function calcular() {
+        let pago = 0;
+        let pagoT = 0;
+
+        if (edad < 25) {
+            pago = 500;
+        } else if (edad >= 25 && edad <= 50) {
+            pago = 1100;
+        } else {
+            pago = 1500;
+        }
+
+        if (profesion.toLowerCase() == "programador") {
+            pagoT = pago + 300;
+        } else if (profesion.toLowerCase() == "medico") {
+            pagoT = pago * 1.15;
+        } else {
+            pagoT = pago;
+        }
+
+        setpagoTotal(pagoT);
+        setCalculado(true);
     }
 
-    function limpiar(){
+
+    function limpiar() {
         setnombre(""),
-        setedad(0)
+            setedad(0)
         setprofesion("")
+        setpagoTotal(0)
+        setCalculado(false)
     }
 
 
@@ -48,8 +72,8 @@ export default function FormularioScreen() {
             <TextInput
                 placeholder='Ingresar edad'
                 style={styles.input}
-                onChangeText={(texto)=> setedad(+texto)}
-                value={ edad.toString() }
+                onChangeText={(texto) => setedad(+texto)}
+                value={edad.toString()}
             />
 
             <TextInput
@@ -63,19 +87,19 @@ export default function FormularioScreen() {
                 <Text> Experiencia </Text>
                 <Switch
                     value={ocultar}
-                    onChange={()=> setocultar(!ocultar ) }
+                    onChange={() => setocultar(!ocultar)}
                 />
             </View>
 
             {
-                ocultar== true
-                ? <TextInput
-                    placeholder='Cuenta tu experiencia'
-                    multiline
-                    style={{ width:"80%", height:100, backgroundColor:"#666"}}
+                ocultar == true
+                    ? <TextInput
+                        placeholder='Cuenta tu experiencia'
+                        multiline
+                        style={{ width: "80%", height: 100, backgroundColor: "#666" }}
                     />
 
-                : <Text>NO Dispone experiencia</Text>
+                    : <Text>NO Dispone experiencia</Text>
             }
 
             <Button
@@ -84,6 +108,12 @@ export default function FormularioScreen() {
                 color={"green"}
             />
 
+            {calculado && (
+                <Text style={styles.resultado}>
+                    El pago final de {nombre} es: ${pagoTotal.toFixed(2)}
+                </Text>
+            )}
+
 
         </View>
     )
@@ -91,15 +121,20 @@ export default function FormularioScreen() {
 
 const styles = StyleSheet.create({
     input: {
-        backgroundColor: "#666",
+        backgroundColor: "#a09e9e",
         fontSize: 25,
         width: "80%",
         margin: 5
     },
     container: {
         flex: 1,
-        backgroundColor: '#bdebf4',
+        backgroundColor: '#80f0a2',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    resultado: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 20
+    }
 })
